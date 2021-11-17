@@ -119,12 +119,10 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
     eventType.customInputs.sort((a, b) => a.id - b.id) || []
   );
 
-  const [periodType, setPeriodType] = useState(() => {
-    return (
-      PERIOD_TYPES.find((s) => s.type === eventType.periodType) ||
-      PERIOD_TYPES.find((s) => s.type === "unlimited")
-    );
-  });
+  const periodType =
+    PERIOD_TYPES.find((s) => s.type === eventType.periodType) ||
+    PERIOD_TYPES.find((s) => s.type === "unlimited");
+
   const [requirePayment, setRequirePayment] = useState(eventType.price > 0);
   const [advancedSettingsVisible, setAdvancedSettingsVisible] = useState(false);
 
@@ -310,7 +308,7 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
     isHidden: boolean;
     location: string;
     // selectedCustomInput: EventTypeCustomInput | undefined;
-    customInputs: EventTypeCustomInput[] | undefined;
+    customInputs: EventTypeCustomInput[];
     users: AdvancedOptions["users"];
     scheduler: {
       enteredAvailability: { openingHours: OpeningHours[]; dateOverrides: DateOverride[] };
@@ -1191,6 +1189,7 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
               <Controller
                 name="customInputs"
                 control={formMethods.control}
+                defaultValue={eventType.customInputs.sort((a, b) => a.id - b.id) || []}
                 render={() => (
                   <CustomInputTypeForm
                     selectedCustomInput={selectedCustomInput}
