@@ -326,7 +326,13 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
     periodDates: { startDate: Date; endDate: Date };
     minimumBookingNotice: number;
   }>({
-    defaultValues: { locations: eventType.locations || [] },
+    defaultValues: {
+      locations: eventType.locations || [],
+      periodDates: {
+        startDate: periodDates.startDate,
+        endDate: periodDates.endDate,
+      },
+    },
   });
 
   const locationFormMethods = useForm<{
@@ -937,8 +943,8 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
                                           defaultValue={periodDates}
                                           render={() => (
                                             <DateRangePicker
-                                              startDate={periodDates.startDate}
-                                              endDate={periodDates.endDate}
+                                              startDate={formMethods.getValues("periodDates").startDate}
+                                              endDate={formMethods.getValues("periodDates").endDate}
                                               onDatesChange={({ startDate, endDate }) => {
                                                 formMethods.setValue("periodDates", { startDate, endDate });
                                               }}
